@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartILR — ILR Level Justification Tool</title>
+  <meta name="description" content="SmartILR generates descriptor-based ILR level justifications that explain exactly why a passage is rated at a given level — with ceiling rationale, floor rationale, and rubric evidence." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.smartilr.com/ilr-level-justification" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "ILR Level Justification for Teachers",
+    "url": "https://www.smartilr.com/ilr-level-justification",
+    "description": "SmartILR generates ILR level justifications using official descriptors, helping teachers explain and defend passage ratings.",
+    "isPartOf": { "@type": "WebSite", "name": "SmartILR", "url": "https://www.smartilr.com/" }
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Inter", Arial, sans-serif; background: #C7CFD9; color: #111827; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 40px 24px 80px; }
+    .brand-bar { background: linear-gradient(135deg, #0f766e, #134e4a); border-radius: 16px; padding: 44px 32px 36px; text-align: center; margin-bottom: 32px; color: white; }
+    .brand-bar a { color: white; text-decoration: none; font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+    .brand-bar p { margin-top: 8px; font-size: 16px; opacity: 0.9; }
+    .card { background: white; border-radius: 16px; padding: 40px 36px; margin-bottom: 24px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+    h1 { font-size: 32px; font-weight: 800; color: #0f766e; line-height: 1.2; margin-bottom: 16px; }
+    h2 { font-size: 20px; font-weight: 700; color: #111827; margin: 28px 0 10px; }
+    p { font-size: 16px; line-height: 1.7; color: #374151; margin-bottom: 14px; }
+    ul { padding-left: 20px; margin-bottom: 14px; }
+    ul li { font-size: 16px; line-height: 1.7; color: #374151; margin-bottom: 6px; }
+    .cta { display: inline-block; background: #0f766e; color: white; font-weight: 600; font-size: 16px; padding: 14px 28px; border-radius: 10px; text-decoration: none; margin-top: 8px; }
+    .cta:hover { background: #134e4a; }
+    .triptych { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin: 20px 0; }
+    .tri-card { border-radius: 10px; padding: 18px 16px; }
+    .tri-assigned { background: #f0fdf4; border: 1px solid #86efac; }
+    .tri-higher { background: #fff7ed; border: 1px solid #fdba74; }
+    .tri-lower { background: #eff6ff; border: 1px solid #93c5fd; }
+    .tri-card strong { display: block; font-size: 13px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px; }
+    .tri-assigned strong { color: #166534; }
+    .tri-higher strong { color: #9a3412; }
+    .tri-lower strong { color: #1e40af; }
+    .tri-card span { font-size: 14px; color: #374151; line-height: 1.5; }
+    .nav-links { background: white; border-radius: 16px; padding: 28px 36px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+    .nav-links h2 { font-size: 17px; color: #6b7280; font-weight: 600; margin-bottom: 14px; margin-top: 0; }
+    .nav-links ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+    .nav-links ul li a { display: inline-block; padding: 8px 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; color: #0f766e; font-weight: 500; font-size: 14px; text-decoration: none; }
+    .nav-links ul li a:hover { background: #dcfce7; }
+    @media (max-width: 600px) { .triptych { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand-bar">
+    <a href="/">SmartILR</a>
+    <p>AI-powered ILR passage rating for language teachers</p>
+  </div>
+
+  <div class="card">
+    <h1>ILR Level Justification for Teachers</h1>
+
+    <p>Assigning an ILR level to a passage is one thing. Explaining that decision in language a student, colleague, or program committee can follow is another challenge entirely. SmartILR generates both — an ILR level placement and a written, descriptor-based justification that explains the reasoning in plain terms.</p>
+
+    <p>The justification SmartILR produces draws directly on ILR descriptor language tied to the assigned level. It doesn't just say a passage is ILR 2; it explains what characteristics of the text make it a 2, what would need to change for it to qualify as 2+, and why it is clearly above ILR 1+ in difficulty.</p>
+
+    <h2>The three-part justification structure</h2>
+    <div class="triptych">
+      <div class="tri-card tri-assigned">
+        <strong>Assigned Level</strong>
+        <span>Why the text places at this specific ILR level, using descriptor evidence from the passage</span>
+      </div>
+      <div class="tri-card tri-higher">
+        <strong>Ceiling Rationale</strong>
+        <span>What the text lacks that would place it at the next level — and why that gap is meaningful</span>
+      </div>
+      <div class="tri-card tri-lower">
+        <strong>Floor Rationale</strong>
+        <span>What the text has that clearly places it above the level below</span>
+      </div>
+    </div>
+
+    <h2>Why justification matters for teachers</h2>
+    <p>In programs that follow ILR or ACTFL frameworks, level decisions are often subject to review. A teacher who can articulate exactly why a passage is ILR 2 — with textual evidence and descriptor language — is far better positioned when those decisions are questioned by learners, supervisors, or accreditation reviewers.</p>
+
+    <p>SmartILR makes it practical to document those justifications consistently across a course sequence or test bank, rather than relying on informal judgments that are hard to defend later.</p>
+
+    <h2>Auto Rubric Justification</h2>
+    <p>Beyond the written level justification, SmartILR can optionally run an Auto Rubric Justification that scores the passage across individual ILR rubric categories and explains each score. This is especially useful when preparing materials for a rating panel or when you want to surface specific areas where a passage sits at a borderline level.</p>
+
+    <a class="cta" href="/">Generate a Level Justification</a>
+  </div>
+
+  <div class="nav-links">
+    <h2>Other SmartILR tools</h2>
+    <ul>
+      <li><a href="/ilr-rating-tool">ILR Rating Tool</a></li>
+      <li><a href="/ilr-listening-analysis">ILR Listening Analysis</a></li>
+      <li><a href="/ilr-reading-analysis">ILR Reading Analysis</a></li>
+      <li><a href="/dlpt-style-ilr-evaluation">DLPT-Style ILR Evaluation</a></li>
+      <li><a href="/">SmartILR Homepage</a></li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>

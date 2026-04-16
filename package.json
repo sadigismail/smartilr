@@ -1,0 +1,18 @@
+{
+  "name": "smartilr-clean-rebuild",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "ffmpeg-static": "^5.3.0",
+    "ffprobe-static": "^3.1.0",
+    "mammoth": "^1.12.0",
+    "multer": "^2.1.1",
+    "openai": "^4.104.0",
+    "pdf-parse": "^2.4.5"
+  }
+}

@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartILR — Calibration Panel</title>
+  <style>
+    /* ── Reset & base ──────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #f1f5f9;
+      --surface:   #ffffff;
+      --border:    #e2e8f0;
+      --text:      #1e293b;
+      --muted:     #64748b;
+      --accent:    #0f766e;
+      --accent-lt: #ccfbf1;
+      --pass:      #16a34a;
+      --pass-bg:   #f0fdf4;
+      --pass-bd:   #bbf7d0;
+      --fail:      #dc2626;
+      --fail-bg:   #fef2f2;
+      --fail-bd:   #fecaca;
+      --warn:      #b45309;
+      --warn-bg:   #fffbeb;
+      --warn-bd:   #fde68a;
+      --skip:      #475569;
+      --skip-bg:   #f8fafc;
+      --skip-bd:   #e2e8f0;
+      --blue:      #1d4ed8;
+      --blue-bg:   #eff6ff;
+      --blue-bd:   #bfdbfe;
+      --radius:    10px;
+      --shadow:    0 1px 4px rgba(0,0,0,.08);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 32px 16px 64px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── Layout ────────────────────────────────────────────────────────────── */
+    .page { max-width: 960px; margin: 0 auto; }
+
+    /* ── Header ────────────────────────────────────────────────────────────── */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .header-left h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .header-left p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 2px;
+    }
+    .header-right { display: flex; gap: 10px; align-items: center; }
+
+    /* ── Buttons ───────────────────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: opacity .15s, background .15s;
+    }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-primary  { background: var(--accent); color: #fff; }
+    .btn-primary:not(:disabled):hover { background: #0d6b63; }
+    .btn-ghost    { background: #fff; color: var(--text); border: 1px solid var(--border); }
+    .btn-ghost:not(:disabled):hover { background: var(--bg); }
+    .btn-sm       { padding: 5px 10px; font-size: 12px; }
+
+    /* ── Summary bar ───────────────────────────────────────────────────────── */
+    .summary {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+    .summary-stat { text-align: center; min-width: 64px; }
+    .summary-stat .num {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .summary-stat .lbl {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-top: 3px;
+    }
+    .summary-divider { width: 1px; height: 40px; background: var(--border); }
+    .summary-bar-wrap { flex: 1; min-width: 160px; }
+    .summary-bar-track {
+      height: 10px;
+      border-radius: 99px;
+      background: var(--border);
+      overflow: hidden;
+    }
+    .summary-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: var(--pass);
+      width: 0;
+      transition: width .5s ease;
+    }
+    .summary-bar-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+    .num-pass  { color: var(--pass); }
+    .num-fail  { color: var(--fail); }
+    .num-skip  { color: var(--skip); }
+
+    /* ── Progress indicator ────────────────────────────────────────────────── */
+    .progress-row {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .progress-row.visible { display: flex; }
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      flex-shrink: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Test card ─────────────────────────────────────────────────────────── */
+    .test-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: border-color .2s;
+    }
+    .test-card.pass { border-left: 4px solid var(--pass); }
+    .test-card.fail { border-left: 4px solid var(--fail); }
+    .test-card.running { border-left: 4px solid var(--accent); }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px 18px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .card-header:hover { background: #fafbfc; }
+
+    .case-num {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .card-meta { flex: 1; min-width: 0; }
+    .card-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+    .card-passage {
+      font-size: 13px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      direction: rtl;
+      text-align: right;
+    }
+    .card-passage.ltr { direction: ltr; text-align: left; }
+
+    .card-badges {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+    .badge-pass  { background: var(--pass-bg); color: var(--pass); border-color: var(--pass-bd); }
+    .badge-fail  { background: var(--fail-bg); color: var(--fail); border-color: var(--fail-bd); }
+    .badge-skip  { background: var(--skip-bg); color: var(--skip); border-color: var(--skip-bd); }
+    .badge-run   { background: var(--accent-lt); color: var(--accent); border-color: #99f6e4; }
+    .badge-level { background: var(--blue-bg); color: var(--blue); border-color: var(--blue-bd); }
+    .badge-expected { background: #f1f5f9; color: var(--text); border-color: var(--border); }
+    .badge-warn  { background: var(--warn-bg); color: var(--warn); border-color: var(--warn-bd); }
+
+    .chevron {
+      flex-shrink: 0;
+      color: var(--muted);
+      transition: transform .2s;
+      font-size: 12px;
+    }
+    .card-header.open .chevron { transform: rotate(180deg); }
+
+    /* ── Card body (collapsible) ───────────────────────────────────────────── */
+    .card-body {
+      display: none;
+      padding: 0 18px 18px;
+      border-top: 1px solid var(--border);
+    }
+    .card-body.open { display: block; }
+
+    .passage-full {
+      background: #fafafa;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin: 14px 0 12px;
+      font-size: 13.5px;
+      line-height: 1.8;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .passage-full.rtl { direction: rtl; text-align: right; }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .result-cell {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .result-cell .rc-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .result-cell .rc-value {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .result-cell .rc-sub {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--muted);
+      margin: 14px 0 6px;
+    }
+
+    .explanation-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .gate-box {
+      background: var(--warn-bg);
+      border: 1px solid var(--warn-bd);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12.5px;
+      color: var(--warn);
+      line-height: 1.6;
+    }
+
+    .no-result {
+      color: var(--muted);
+      font-style: italic;
+      font-size: 13px;
+      padding: 14px 0 6px;
+    }
+
+    .card-run-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .card-run-spinner {
+      display: none;
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+    .card-run-spinner.visible { display: block; }
+
+    /* ── Error box ─────────────────────────────────────────────────────────── */
+    .error-box {
+      background: var(--fail-bg);
+      border: 1px solid var(--fail-bd);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12.5px;
+      color: var(--fail);
+      margin-top: 10px;
+    }
+
+    /* ── Add-case panel ────────────────────────────────────────────────────── */
+    .add-panel {
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-top: 18px;
+    }
+    .add-panel h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+    .form-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+    .form-group { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 140px; }
+    .form-group label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 7px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--text);
+      font-family: inherit;
+      background: #fff;
+      outline: none;
+      transition: border-color .15s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--accent);
+    }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+
+    /* ── Links ─────────────────────────────────────────────────────────────── */
+    a.back-link {
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: none;
+    }
+    a.back-link:hover { color: var(--accent); }
+
+    /* ── Responsive ────────────────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .card-badges { flex-wrap: wrap; }
+      .summary { gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <h1>SmartILR Calibration Panel</h1>
+      <p>Internal test suite — run sample passages against the live engine and track pass/fail by expected level.</p>
+    </div>
+    <div class="header-right">
+      <a class="back-link" href="/">← Main app</a>
+      <button class="btn btn-ghost btn-sm" onclick="resetAll()">Reset</button>
+      <button class="btn btn-primary" id="runAllBtn" onclick="runAll()">▶ Run All Tests</button>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary" id="summary">
+    <div class="summary-stat">
+      <div class="num" id="sumTotal">—</div>
+      <div class="lbl">Total</div>
+    </div>
+    <div class="summary-divider"></div>
+    <div class="summary-stat">
+      <div class="num num-pass" id="sumPass">—</div>
+      <div class="lbl">Pass</div>
+    </div>
+    <div class="summary-stat">
+      <div class="num num-fail" id="sumFail">—</div>
+      <div class="lbl">Fail</div>
+    </div>
+    <div class="summary-stat">
+      <div class="num num-skip" id="sumSkip">—</div>
+      <div class="lbl">Not Run</div>
+    </div>
+    <div class="summary-divider"></div>
+    <div class="summary-bar-wrap">
+      <div class="summary-bar-track">
+        <div class="summary-bar-fill" id="summaryBar"></div>
+      </div>
+      <div class="summary-bar-label" id="summaryBarLabel">Run tests to see pass rate</div>
+    </div>
+  </div>
+
+  <!-- Progress row -->
+  <div class="progress-row" id="progressRow">
+    <div class="spinner"></div>
+    <span id="progressText">Running tests…</span>
+  </div>
+
+  <!-- Test cases -->
+  <div id="testList"></div>
+
+  <!-- Add new test case -->
+  <div class="add-panel">
+    <h3>Add test case</h3>
+    <div class="form-row">
+      <div class="form-group" style="flex:3;min-width:200px;">
+        <label>Passage</label>
+        <textarea id="newPassage" placeholder="Paste passage text here…"></textarea>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Label</label>
+        <input id="newLabel" type="text" placeholder="Case 6 — description" />
+      </div>
+      <div class="form-group">
+        <label>Language</label>
+        <select id="newLang">
+          <option value="Auto-detect">Auto-detect</option>
+          <option value="Arabic">Arabic</option>
+          <option value="Farsi/Persian">Farsi/Persian</option>
+          <option value="French">French</option>
+          <option value="Spanish">Spanish</option>
+          <option value="Russian">Russian</option>
+          <option value="Chinese">Chinese</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Modality</label>
+        <select id="newModality">
+          <option value="reading">Reading</option>
+          <option value="listening">Listening</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Expected Level</label>
+        <select id="newExpected">
+          <option>0+</option>
+          <option>1</option>
+          <option>1+</option>
+          <option>2</option>
+          <option>2+</option>
+          <option>3</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn btn-ghost" onclick="addCase()">+ Add and run</button>
+  </div>
+
+</div>
+
+<script>
+// ── Test case definitions ─────────────────────────────────────────────────────
+
+const TESTS = [
+  {
+    id: 1,
+    label: "TC-01 — Simple job announcement (Arabic)",
+    desc: "Single sentence listing a job opening. No cross-sentence integration required.",
+    passage: "تعلن مدارس الحكمة عن حاجتها لمدرس لغة انجليزية للصفين الثاني والثالث",
+    language: "Arabic",
+    modality: "reading",
+    expected: "1",
+  },
+  {
+    id: 2,
+    label: "TC-02 — Job announcement + contact detail (Arabic)",
+    desc: "Same announcement with a phone number added. The contact detail is additive and does not create sentence-to-sentence dependency. Functional/additive ceiling should hold at ILR 1.",
+    passage: "تعلن مدارس الحكمة عن حاجتها لمدرس لغة انجليزية للصفين الثاني والثالث، للتقديم يرجى الاتصال بالمدرسة تلفون ٢٤٣٥٧٨٨",
+    language: "Arabic",
+    modality: "reading",
+    expected: "1",
+  },
+  {
+    id: 3,
+    label: "TC-03 — Short connected discourse (Arabic)",
+    desc: "Two sentences where the second depends on information established in the first. The reader must connect the postponement with its consequence across sentence boundaries — consistent with ILR 1+.",
+    passage: "أُفيد بأن الطقس سيتحسن خلال الأيام القادمة، مما سيتيح استئناف الفعاليات التي تأجلت الأسبوع الماضي. وقد رحّب المنظمون بهذا التطور وأعلنوا أن التفاصيل ستُعلن قريباً.",
+    language: "Arabic",
+    modality: "reading",
+    expected: "1+",
+  },
+  {
+    id: 4,
+    label: "TC-04 — Paragraph-level integration with inference (Arabic)",
+    desc: "Multi-sentence report requiring the reader to integrate the main finding with its attributed causes and then connect both to the study's recommendations. Necessary inference and discourse-level integration consistent with ILR 2.",
+    passage: "كشفت دراسة حديثة أجرتها جامعة القاهرة أن معدلات القراءة بين طلاب المرحلة الإعدادية تراجعت بشكل ملحوظ خلال السنوات الخمس الماضية. وأرجع الباحثون هذا التراجع إلى الاستخدام المفرط للأجهزة الرقمية وغياب ثقافة القراءة داخل الأسرة. وأوصى التقرير بضرورة إدراج القراءة الحرة في المناهج المدرسية، وتوفير مكتبات مجهزة في المدارس لتشجيع الطلاب على الاطلاع والبحث.",
+    language: "Arabic",
+    modality: "reading",
+    expected: "2",
+  },
+  {
+    id: 5,
+    label: "TC-05 — Analytical viewpoint with sustained inference (Arabic)",
+    desc: "Editorial passage in which the author's stance must be inferred from the argumentative structure. The reader must integrate the structural critique, its implied causes, and the normative conclusion across multiple paragraphs — consistent with ILR 2+.",
+    passage: "يرى كثير من المفكرين التربويين أن المنظومة التعليمية في المنطقة العربية لا تزال تعاني من أزمة بنيوية عميقة، تتجلى في الفجوة المتسعة بين مخرجات التعليم ومتطلبات سوق العمل المتغير. فعلى الرغم من الإصلاحات المتكررة والاستثمارات الضخمة في البنية التحتية، يظل التفكير النقدي والإبداع مغيَّبَين عن الفصل الدراسي، في حين تنصبّ الجهود على الحفظ والاسترجاع. وهذا التوجه، وفق ما يذهب إليه بعض المحللين، ليس قاصراً على الجانب الأكاديمي، بل يمتد ليؤثر في تشكّل الهوية الفكرية للأجيال، مما يستدعي إعادة النظر الجذرية في فلسفة التعليم ذاتها لا في أدواته فحسب.",
+    language: "Arabic",
+    modality: "reading",
+    expected: "2+",
+  },
+];
+
+// ── State ─────────────────────────────────────────────────────────────────────
+
+const results = {};   // id → { actual, passed, raw }
+
+// ── DOM helpers ───────────────────────────────────────────────────────────────
+
+function isRTL(text) {
+  return /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/.test(text);
+}
+
+function levelOrder(l) {
+  return ["0+","1","1+","2","2+","3"].indexOf(String(l));
+}
+
+function levelDiff(a, b) {
+  return Math.abs(levelOrder(a) - levelOrder(b));
+}
+
+// ── Render ────────────────────────────────────────────────────────────────────
+
+function renderAll() {
+  const list = document.getElementById("testList");
+  list.innerHTML = "";
+  TESTS.forEach(tc => renderCard(tc, list));
+  updateSummary();
+}
+
+function renderCard(tc, container) {
+  const r   = results[tc.id];
+  const rtl = isRTL(tc.passage);
+
+  let statusClass = "";
+  if (r) statusClass = r.passed ? "pass" : "fail";
+
+  const card = document.createElement("div");
+  card.className = `test-card ${statusClass}`;
+  card.id = `card-${tc.id}`;
+
+  // ── Badges ──────────────────────────────────────────────────────────────────
+  const expectedBadge = `<span class="badge badge-expected">Expected: ILR ${tc.expected}</span>`;
+  let statusBadge = `<span class="badge badge-skip">Not run</span>`;
+  let actualBadge = "";
+  if (r) {
+    statusBadge = r.passed
+      ? `<span class="badge badge-pass">✓ Pass</span>`
+      : `<span class="badge badge-fail">✗ Fail</span>`;
+    actualBadge = `<span class="badge badge-level">Actual: ILR ${r.actual}</span>`;
+  }
+
+  // ── Result detail (shown in body) ───────────────────────────────────────────
+  let bodyDetail = `<p class="no-result">No result yet — run this test to see output.</p>`;
+  if (r && r.raw) {
+    const raw = r.raw;
+    const diff = levelDiff(tc.expected, r.actual);
+    const diffLabel = diff === 0 ? "0 steps off" : `${diff} step${diff > 1 ? "s" : ""} off`;
+
+    const gate = raw.gateRationale || raw.engineNote || "";
+    const modIdx = raw.modalityIndex != null
+      ? `${raw.modalityIndex}/10 (adj: ${raw.modalityAdjustmentApplied ? "yes" : "no"})`
+      : "—";
+    const justification = raw.ilrDescriptorJustification || raw.whyThisLevel || "";
+    const whyNot = raw.whyNotHigherLevel || "";
+    const whyNotLow = raw.whyNotLowerLevel || "";
+
+    const gateBlock = gate
+      ? `<div class="section-label">Engine gate note</div>
+         <div class="gate-box">${escHtml(gate)}</div>`
+      : "";
+
+    bodyDetail = `
+      <div class="result-grid">
+        <div class="result-cell">
+          <div class="rc-label">Expected level</div>
+          <div class="rc-value">ILR ${tc.expected}</div>
+        </div>
+        <div class="result-cell">
+          <div class="rc-label">Actual level</div>
+          <div class="rc-value" style="color:${r.passed ? 'var(--pass)' : 'var(--fail)'}">ILR ${r.actual}</div>
+          <div class="rc-sub">${diffLabel}</div>
+        </div>
+        <div class="result-cell">
+          <div class="rc-label">Modality index</div>
+          <div class="rc-value" style="font-size:14px">${modIdx}</div>
+        </div>
+        <div class="result-cell">
+          <div class="rc-label">Discourse type</div>
+          <div class="rc-value" style="font-size:13px">${escHtml(raw.discourseType || "—")}</div>
+        </div>
+      </div>
+      ${gateBlock}
+      ${justification ? `<div class="section-label">ILR justification</div><div class="explanation-box">${escHtml(justification)}</div>` : ""}
+      ${whyNot ? `<div class="section-label">Why not higher</div><div class="explanation-box">${escHtml(whyNot)}</div>` : ""}
+      ${whyNotLow ? `<div class="section-label">Why not lower</div><div class="explanation-box">${escHtml(whyNotLow)}</div>` : ""}
+    `;
+  }
+  if (r && r.error) {
+    bodyDetail = `<div class="error-box"><strong>Error:</strong> ${escHtml(r.error)}</div>`;
+  }
+
+  card.innerHTML = `
+    <div class="card-header" id="hdr-${tc.id}" onclick="toggleBody(${tc.id})">
+      <div class="case-num">${tc.id}</div>
+      <div class="card-meta">
+        <div class="card-title">${escHtml(tc.label)}</div>
+        <div class="card-passage ${rtl ? "" : "ltr"}">${escHtml(tc.passage)}</div>
+      </div>
+      <div class="card-badges">
+        ${expectedBadge}
+        ${actualBadge}
+        ${statusBadge}
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body" id="body-${tc.id}">
+      <p style="font-size:12.5px;color:var(--muted);margin-top:14px">${escHtml(tc.desc)}</p>
+      <div class="section-label">Full passage</div>
+      <div class="passage-full ${rtl ? "rtl" : ""}">${escHtml(tc.passage)}</div>
+      ${bodyDetail}
+      <div class="card-run-row">
+        <button class="btn btn-ghost btn-sm" id="runBtn-${tc.id}" onclick="runOne(${tc.id})">▶ Run</button>
+        <div class="card-run-spinner" id="spin-${tc.id}"></div>
+        <span id="runStatus-${tc.id}" style="font-size:12px;color:var(--muted)"></span>
+      </div>
+    </div>
+  `;
+
+  container.appendChild(card);
+}
+
+function escHtml(s) {
+  return String(s ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+// ── Toggle card open/close ────────────────────────────────────────────────────
+
+function toggleBody(id) {
+  const hdr  = document.getElementById(`hdr-${id}`);
+  const body = document.getElementById(`body-${id}`);
+  const open = body.classList.contains("open");
+  body.classList.toggle("open", !open);
+  hdr.classList.toggle("open", !open);
+}
+
+// ── API call ──────────────────────────────────────────────────────────────────
+
+async function fetchRating(tc) {
+  const endpoint = tc.modality === "listening" ? "/api/ilr-rating" : "/api/ilr-rating";
+  const body = JSON.stringify({
+    passage:  tc.passage,
+    language: tc.language || "Auto-detect",
+    mode:     tc.modality,
+  });
+  const res = await fetch(endpoint, {
+    method:  "POST",
+    headers: { "Content-Type": "application/json" },
+    body,
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+// ── Run one test ──────────────────────────────────────────────────────────────
+
+async function runOne(id) {
+  const tc      = TESTS.find(t => t.id === id);
+  if (!tc) return;
+
+  const btn     = document.getElementById(`runBtn-${id}`);
+  const spinner = document.getElementById(`spin-${id}`);
+  const status  = document.getElementById(`runStatus-${id}`);
+
+  btn.disabled = true;
+  spinner.classList.add("visible");
+  status.textContent = "Calling engine…";
+
+  // Open body if not already open
+  const body = document.getElementById(`body-${id}`);
+  if (!body.classList.contains("open")) toggleBody(id);
+
+  // Mark card as running
+  const card = document.getElementById(`card-${id}`);
+  card.className = "test-card running";
+
+  try {
+    const raw    = await fetchRating(tc);
+    const actual = raw.finalLevel || raw.ilrLevel || "?";
+    const passed = String(actual) === String(tc.expected);
+
+    results[id] = { actual, passed, raw };
+    status.textContent = "";
+  } catch (e) {
+    results[id] = { actual: "?", passed: false, error: e.message, raw: null };
+    status.textContent = "";
+  }
+
+  btn.disabled = false;
+  spinner.classList.remove("visible");
+  refreshCard(tc);
+  updateSummary();
+}
+
+// ── Run all ───────────────────────────────────────────────────────────────────
+
+async function runAll() {
+  const btn      = document.getElementById("runAllBtn");
+  const progRow  = document.getElementById("progressRow");
+  const progText = document.getElementById("progressText");
+
+  btn.disabled = true;
+  progRow.classList.add("visible");
+
+  for (let i = 0; i < TESTS.length; i++) {
+    const tc = TESTS[i];
+    progText.textContent = `Running ${i + 1} of ${TESTS.length}: ${tc.label}…`;
+
+    const card = document.getElementById(`card-${tc.id}`);
+    if (card) card.className = "test-card running";
+
+    try {
+      const raw    = await fetchRating(tc);
+      const actual = raw.finalLevel || raw.ilrLevel || "?";
+      const passed = String(actual) === String(tc.expected);
+      results[tc.id] = { actual, passed, raw };
+    } catch (e) {
+      results[tc.id] = { actual: "?", passed: false, error: e.message, raw: null };
+    }
+
+    refreshCard(tc);
+    updateSummary();
+  }
+
+  progRow.classList.remove("visible");
+  progText.textContent = "";
+  btn.disabled = false;
+}
+
+// ── Refresh a single card in place ───────────────────────────────────────────
+
+function refreshCard(tc) {
+  const old = document.getElementById(`card-${tc.id}`);
+  if (!old) return;
+  const wasOpen = document.getElementById(`body-${tc.id}`)?.classList.contains("open");
+  const replacement = document.createElement("div");
+  renderCard(tc, replacement);
+  const newCard = replacement.firstChild;
+  old.replaceWith(newCard);
+  if (wasOpen) {
+    document.getElementById(`body-${tc.id}`)?.classList.add("open");
+    document.getElementById(`hdr-${tc.id}`)?.classList.add("open");
+  }
+}
+
+// ── Summary update ─────────────────────────────────────────────────────────────
+
+function updateSummary() {
+  const total = TESTS.length;
+  const ran   = Object.keys(results).length;
+  const pass  = Object.values(results).filter(r => r.passed).length;
+  const fail  = ran - pass;
+  const skip  = total - ran;
+  const rate  = ran > 0 ? Math.round((pass / ran) * 100) : 0;
+
+  document.getElementById("sumTotal").textContent = total;
+  document.getElementById("sumPass").textContent  = ran > 0 ? pass : "—";
+  document.getElementById("sumFail").textContent  = ran > 0 ? fail : "—";
+  document.getElementById("sumSkip").textContent  = skip;
+
+  const bar   = document.getElementById("summaryBar");
+  const label = document.getElementById("summaryBarLabel");
+
+  if (ran > 0) {
+    bar.style.width = `${rate}%`;
+    bar.style.background = rate === 100 ? "var(--pass)" : rate >= 60 ? "#f59e0b" : "var(--fail)";
+    label.textContent = `${pass} / ${ran} tests passed (${rate}%)`;
+  } else {
+    bar.style.width = "0%";
+    label.textContent = "Run tests to see pass rate";
+  }
+}
+
+// ── Reset ─────────────────────────────────────────────────────────────────────
+
+function resetAll() {
+  Object.keys(results).forEach(k => delete results[k]);
+  renderAll();
+}
+
+// ── Add new case ─────────────────────────────────────────────────────────────
+
+function addCase() {
+  const passage  = document.getElementById("newPassage").value.trim();
+  const label    = document.getElementById("newLabel").value.trim();
+  const lang     = document.getElementById("newLang").value;
+  const modality = document.getElementById("newModality").value;
+  const expected = document.getElementById("newExpected").value;
+
+  if (!passage) {
+    alert("Paste a passage first.");
+    return;
+  }
+
+  const nextId = Math.max(...TESTS.map(t => t.id), 0) + 1;
+  const tc = {
+    id: nextId,
+    label: label || `TC-0${nextId} — Custom`,
+    desc:  "Custom test case added manually.",
+    passage,
+    language: lang,
+    modality,
+    expected,
+  };
+  TESTS.push(tc);
+
+  const list = document.getElementById("testList");
+  renderCard(tc, list);
+  updateSummary();
+
+  // Clear form
+  document.getElementById("newPassage").value = "";
+  document.getElementById("newLabel").value   = "";
+
+  // Auto-run the new case
+  setTimeout(() => runOne(nextId), 100);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+
+renderAll();
+</script>
+</body>
+</html>

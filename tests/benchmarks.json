@@ -1,0 +1,136 @@
+{
+  "version": "1.1",
+  "created": "2026-03-26",
+  "description": "SmartILR regression benchmark set. Run against the live engine to guard against future overrating or underrating.",
+  "toleranceKey": {
+    "exact":  "Result must equal expectedLevel exactly.",
+    "atLeast": "Result must be >= expectedLevel (pass if at or above).",
+    "range":  "Result must fall within expectedMin..expectedMax inclusive."
+  },
+  "levels": ["1", "1+", "2", "2+", "3"],
+
+  "tests": [
+
+    {
+      "id": "R-001",
+      "label": "Explicit factual news report — ILR 2",
+      "mode": "reading",
+      "expectedLevel": "2",
+      "tolerance": "exact",
+      "rationale": "Fully explicit news with attribution verbs, named sources, chronological structure. No inference demand. Ceiling rule must cap at ILR 2. Any language that returns 2+ or 3 is overrating; any that returns 1 or 1+ is underrating.",
+      "passages": [
+        {
+          "language": "Arabic",
+          "text": "أعلن وزير الخارجية الأمريكي أنتوني بلينكن، عقب محادثاته مع نظيره الصيني وانغ يي في جنيف، أن الجانبين اتفقا على إجراء مزيد من المباحثات حول قضايا التجارة والأمن. وأشارت المباحثات إلى أن الولايات المتحدة والصين ستعقدان اجتماعات فنية إضافية خلال الأشهر المقبلة. وأكد بلينكن أن المحادثات كانت منتجة، مضيفاً أن الطرفين تعاملا مع الملفات الخلافية بشكل مباشر. وأفادت المصادر الدبلوماسية بأن الاجتماع استمر ست ساعات وتناول ملفات التعريفات الجمركية وحقوق الملكية الفكرية والتعاون في مجال المناخ."
+        },
+        {
+          "language": "English",
+          "text": "Secretary of State Antony Blinken announced after his talks with Chinese Foreign Minister Wang Yi in Geneva that both sides agreed to hold further discussions on trade and security issues. The meetings indicated that the United States and China would hold additional technical meetings in the coming months. Blinken confirmed that the talks were productive, adding that both sides addressed the contentious files directly. Diplomatic sources reported that the meeting lasted six hours and covered tariffs, intellectual property rights, and climate cooperation."
+        },
+        {
+          "language": "Spanish",
+          "text": "El secretario de Estado estadounidense, Antony Blinken, anunció tras sus conversaciones con el ministro de Relaciones Exteriores chino, Wang Yi, en Ginebra, que ambas partes acordaron celebrar más conversaciones sobre comercio y seguridad. Las reuniones indicaron que Estados Unidos y China celebrarían reuniones técnicas adicionales en los próximos meses. Blinken confirmó que las conversaciones fueron productivas, y añadió que ambas partes abordaron directamente los expedientes conflictivos. Fuentes diplomáticas informaron que la reunión duró seis horas y abarcó aranceles, derechos de propiedad intelectual y cooperación climática."
+        }
+      ]
+    },
+
+    {
+      "id": "R-002",
+      "label": "Argumentative editorial — ILR 2+",
+      "mode": "reading",
+      "expectedLevel": "2+",
+      "tolerance": "range",
+      "expectedMin": "2+",
+      "expectedMax": "3",
+      "rationale": "Multi-paragraph editorial with explicit stance, counter-argument, evidence, and direct conclusion. Requires reader to follow sustained argument and detect authorial evaluation. Must not fall below ILR 2+. ILR 3 is acceptable if density is rated as dense by the model.",
+      "passages": [
+        {
+          "language": "Arabic",
+          "text": "لن تُحقق اتفاقيات المناخ الدولية أهدافها ما لم تُلزَم الدول المنتجة للنفط بخطط واضحة للتحول إلى الطاقة النظيفة. إن الاكتفاء بالتعهدات الطوعية أثبت فشله على مدى عقود، ولا يزال انبعاث ثاني أكسيد الكربون في تصاعد مستمر رغم كل القمم والمفاوضات. يرى بعضهم أن الضغط على الدول المنتجة سيؤدي إلى عدم الاستقرار الاقتصادي، غير أن هذا المنطق يُقدّم مصالح الصناعة على حساب مستقبل الأجيال القادمة. الدليل واضح: الدول التي أدمجت ضرائب الكربون ضمن منظومتها التشريعية حققت نتائج ملموسة في خفض الانبعاثات دون أن تُعاني من ركود اقتصادي. الوقت لا يتسع للمقاربات التدريجية، والإصلاح الجذري الآن أولى من الاستجابة لأزمة مناخية كارثية لاحقاً."
+        },
+        {
+          "language": "English",
+          "text": "International climate agreements will not achieve their goals unless oil-producing nations are bound by clear plans to transition to clean energy. Voluntary pledges alone have proven ineffective over decades, and carbon emissions continue to rise despite all summits and negotiations. Some argue that pressuring producing nations will cause economic instability, but this logic prioritizes industry interests over the future of coming generations. The evidence is clear: countries that have integrated carbon taxes into their legislative frameworks have achieved measurable results in reducing emissions without suffering economic recession. There is no time for gradual approaches, and radical reform now is preferable to responding to a catastrophic climate crisis later."
+        },
+        {
+          "language": "Spanish",
+          "text": "Los acuerdos climáticos internacionales no lograrán sus objetivos a menos que los países productores de petróleo estén obligados por planes claros para transitar hacia energía limpia. Los compromisos voluntarios han demostrado ser ineficaces durante décadas, y las emisiones de carbono siguen aumentando a pesar de todas las cumbres y negociaciones. Algunos sostienen que presionar a los países productores causará inestabilidad económica, pero esta lógica antepone los intereses de la industria sobre el futuro de las generaciones venideras. La evidencia es clara: los países que han integrado impuestos al carbono en sus marcos legislativos han logrado resultados medibles en la reducción de emisiones sin sufrir recesión económica. No hay tiempo para enfoques graduales, y la reforma radical ahora es preferible a responder a una crisis climática catastrófica más adelante."
+        }
+      ]
+    },
+
+    {
+      "id": "R-003",
+      "label": "Dense abstract analytical essay — ILR 3",
+      "mode": "reading",
+      "expectedLevel": "3",
+      "tolerance": "range",
+      "expectedMin": "2+",
+      "expectedMax": "3",
+      "rationale": "Dense philosophical-analytical text in which the author's thesis is never stated directly. The reader must reconstruct the argument from implicit evidence, connect ideas across paragraphs, and interpret specialized abstract vocabulary. Heavy inference and paragraph-to-paragraph dependency throughout. ILR 2+ is an acceptable floor; ILR 3 is the target. Any result below 2+ is a regression.",
+      "passages": [
+        {
+          "language": "Arabic",
+          "text": "إن الإشكال الذي يتصدر نظرية الحداثة السياسية — وهو أن الدولة التي يُفترض فيها صون الحقوق الكونية تستمد شرعيتها من الإرادة الجمعية التي تُشكّلها في آنٍ واحد — لم يُحسم على يد المقاربات الإجرائية، بل انتقل من مستوى التأسيس إلى مستوى التشغيل. فالمفهوم الرولزي للعدالة لا ينجح في ادعاء الحياد الأكسيولوجي إلا باشتراطه ما يسبق الجهل المزعوم بالذات وبمصالحها، أي بافتراض ذات سابقة على غاياتها. وهذا التدوير المفهومي ليس خطأً فلسفياً عارضاً، بل ضرورة بنيوية: إذ لا تقوم منظومة الحقوق إلا على ذات مصالحها محددة سلفاً بما يجعلها قابلة للتحكيم. والتحدي الأعمق، الذي تحجبه الجدالات حول معايير التوزيع، هو ما إذا كانت هذه الذات المُشكَّلة مؤسسياً تحتفظ بأي تماسك خارج شروط إنتاجها."
+        },
+        {
+          "language": "English",
+          "text": "The paradox at the heart of liberal democratic theory — that universal rights are enforced by states whose legitimacy derives from the very consent they shape — has been displaced rather than resolved by proceduralist frameworks. Rawlsian justification achieves its appearance of neutrality only by placing the veil of ignorance prior to any account of what interests the veil is designed to protect, thereby smuggling in a substantive conception of the self as prior to its ends. This circularity becomes legible not as a philosophical mistake but as a structural necessity: systems of rights require a subject whose interests are already defined in terms commensurate with adjudication. The more fundamental challenge, obscured by debates over distributive criteria, is whether the subject so constructed retains any coherence outside the institutional conditions that produce it."
+        },
+        {
+          "language": "Spanish",
+          "text": "La paradoja central de la teoría democrática liberal — que los derechos universales son garantizados por estados cuya legitimidad deriva del mismo consentimiento que configuran — ha sido desplazada, más que resuelta, por los marcos procedimentales. La justificación rawlsiana logra su apariencia de neutralidad solo al situar el velo de la ignorancia previo a cualquier descripción de los intereses que ese velo pretende proteger, introduciendo subrepticiamente una concepción sustantiva del sujeto como anterior a sus fines. Esta circularidad no debe leerse como un error filosófico, sino como una necesidad estructural: los sistemas de derechos requieren un sujeto cuyos intereses estén ya definidos en términos conmensurables con la adjudicación. El desafío más fundamental, oscurecido por los debates sobre criterios distributivos, es si el sujeto así construido conserva alguna coherencia fuera de las condiciones institucionales que lo producen."
+        }
+      ]
+    },
+
+    {
+      "id": "L-001",
+      "label": "Explicit factual listening news clip — ILR 2",
+      "mode": "listening",
+      "expectedLevel": "2",
+      "tolerance": "exact",
+      "rationale": "Short explicit spoken announcement. All information stated directly. No inference required. Moderate pace. High redundancy across sentences. Must not return above ILR 2 regardless of topic or language. Must not return below ILR 2 (natural spoken pace, some vocabulary).",
+      "passages": [
+        {
+          "language": "Arabic",
+          "text": "أعلن وزير الصحة اليوم أن وزارته ستطلق حملة تطعيم وطنية خلال الأسبوع القادم. وستشمل الحملة جميع المراكز الصحية في المدن الرئيسية. وقال الوزير إن اللقاح متاح مجاناً لجميع المواطنين. وأضاف أن التسجيل يمكن إجراؤه عبر التطبيق الرسمي أو بالمراجعة المباشرة للمركز الصحي القريب."
+        },
+        {
+          "language": "English",
+          "text": "The Minister of Health announced today that the ministry will launch a national vaccination campaign next week. The campaign will cover all health centers in major cities. The minister said that the vaccine is available free of charge to all citizens. He added that registration can be completed through the official app or by visiting the nearest health center directly."
+        },
+        {
+          "language": "Spanish",
+          "text": "El Ministro de Salud anunció hoy que el ministerio lanzará una campaña nacional de vacunación la próxima semana. La campaña cubrirá todos los centros de salud en las principales ciudades. El ministro dijo que la vacuna está disponible de forma gratuita para todos los ciudadanos. Añadió que el registro puede realizarse a través de la aplicación oficial o visitando directamente el centro de salud más cercano."
+        }
+      ]
+    },
+
+    {
+      "id": "L-002",
+      "label": "Analytical listening commentary — ILR 2+",
+      "mode": "listening",
+      "expectedLevel": "2+",
+      "tolerance": "range",
+      "expectedMin": "2+",
+      "expectedMax": "3",
+      "rationale": "Spoken analytical commentary in which the speaker's position is never stated explicitly. Listener must infer the evaluative stance from the way evidence is framed. Moderate inference demand, analytical structure, low redundancy. Must not fall to ILR 2 or below. ILR 3 is acceptable if delivery density is assessed as dense.",
+      "passages": [
+        {
+          "language": "Arabic",
+          "text": "ما يثير الانتباه في هذا الجدل ليس الأرقام بحد ذاتها، بل ما تكشفه عن افتراضاتنا الضمنية. حين نتحدث عن النمو الاقتصادي كغاية، نقبل دون وعي بأن التوزيع مسألة ثانوية. غير أن البيانات تُظهر أن دولاً حققت معدلات نمو مرتفعة واستمر فيها التفاوت في التوسع، بينما دول أخرى بمعدلات أدنى أحرزت تحسناً ملموساً في مؤشرات الرفاه. القضية إذاً ليست في معدل النمو، بل في البنية التي يجري من خلالها. ومن يُحيل الفشل التوزيعي إلى عوامل خارجية يتجاهل عن قصد أو جهل الخيارات السياسية التي أسست لهذه البنية."
+        },
+        {
+          "language": "English",
+          "text": "What is striking about this debate is not the numbers themselves, but what they reveal about our underlying assumptions. When we speak of economic growth as an end goal, we implicitly accept that distribution is a secondary concern. Yet the data shows that countries with high growth rates saw inequality continue to expand, while others with lower rates achieved measurable improvements in welfare indicators. The issue therefore lies not in the growth rate, but in the structure through which it flows. Those who attribute distributive failure to external factors are deliberately or ignorantly ignoring the policy choices that built that structure in the first place."
+        },
+        {
+          "language": "Spanish",
+          "text": "Lo que llama la atención en este debate no son los números en sí, sino lo que revelan sobre nuestros supuestos implícitos. Cuando hablamos del crecimiento económico como objetivo final, aceptamos implícitamente que la distribución es una preocupación secundaria. Sin embargo, los datos muestran que países con altas tasas de crecimiento vieron expandirse la desigualdad, mientras que otros con tasas más bajas lograron mejoras medibles en los indicadores de bienestar. El problema no radica, por tanto, en la tasa de crecimiento, sino en la estructura a través de la cual fluye. Quienes atribuyen el fracaso distributivo a factores externos ignoran deliberada o ignorantemente las decisiones políticas que construyeron esa estructura."
+        }
+      ]
+    }
+
+  ]
+}

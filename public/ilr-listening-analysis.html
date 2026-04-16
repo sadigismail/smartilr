@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ILR Listening Analysis Tool | SmartILR</title>
+  <meta name="description" content="SmartILR analyzes spoken language samples for ILR listening level, delivery difficulty, vocabulary complexity, and inference demand — with teacher-ready justification." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.smartilr.com/ilr-listening-analysis" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "ILR Listening Analysis Tool",
+    "url": "https://www.smartilr.com/ilr-listening-analysis",
+    "description": "SmartILR evaluates listening passages for ILR level with delivery analysis, difficulty scoring, and descriptor-based teacher justification.",
+    "isPartOf": { "@type": "WebSite", "name": "SmartILR", "url": "https://www.smartilr.com/" }
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Inter", Arial, sans-serif; background: #C7CFD9; color: #111827; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 40px 24px 80px; }
+    .brand-bar { background: linear-gradient(135deg, #0f766e, #134e4a); border-radius: 16px; padding: 44px 32px 36px; text-align: center; margin-bottom: 32px; color: white; }
+    .brand-bar a { color: white; text-decoration: none; font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+    .brand-bar p { margin-top: 8px; font-size: 16px; opacity: 0.9; }
+    .card { background: white; border-radius: 16px; padding: 40px 36px; margin-bottom: 24px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+    h1 { font-size: 32px; font-weight: 800; color: #0f766e; line-height: 1.2; margin-bottom: 16px; }
+    h2 { font-size: 20px; font-weight: 700; color: #111827; margin: 28px 0 10px; }
+    p { font-size: 16px; line-height: 1.7; color: #374151; margin-bottom: 14px; }
+    ul { padding-left: 20px; margin-bottom: 14px; }
+    ul li { font-size: 16px; line-height: 1.7; color: #374151; margin-bottom: 6px; }
+    .cta { display: inline-block; background: #0f766e; color: white; font-weight: 600; font-size: 16px; padding: 14px 28px; border-radius: 10px; text-decoration: none; margin-top: 8px; }
+    .cta:hover { background: #134e4a; }
+    .note { background: #f0fdf4; border-left: 4px solid #0f766e; border-radius: 8px; padding: 16px 20px; margin: 20px 0; font-size: 15px; color: #065f46; line-height: 1.6; }
+    .nav-links { background: white; border-radius: 16px; padding: 28px 36px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+    .nav-links h2 { font-size: 17px; color: #6b7280; font-weight: 600; margin-bottom: 14px; margin-top: 0; }
+    .nav-links ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+    .nav-links ul li a { display: inline-block; padding: 8px 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; color: #0f766e; font-weight: 500; font-size: 14px; text-decoration: none; }
+    .nav-links ul li a:hover { background: #dcfce7; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand-bar">
+    <a href="/">SmartILR</a>
+    <p>AI-powered ILR passage rating for language teachers</p>
+  </div>
+
+  <div class="card">
+    <h1>ILR Listening Analysis Tool</h1>
+
+    <p>SmartILR evaluates audio samples for ILR listening level using direct audio analysis — not transcript-based scoring. Upload an audio file, and SmartILR assesses the spoken language on its own terms: how fast the speaker talks, how complex the vocabulary is in context, how much inferential work a listener must do, and how the delivery affects overall comprehension difficulty.</p>
+
+    <p>The result is an ILR listening level assignment with a structured breakdown that teachers can use immediately — for curriculum planning, passage screening, or learner placement decisions.</p>
+
+    <h2>What the listening analysis covers</h2>
+    <ul>
+      <li><strong>Delivery difficulty:</strong> speech rate, disfluency, accent, and speaker clarity</li>
+      <li><strong>Vocabulary in context:</strong> technical terms, idiomatic language, register, and abstraction level</li>
+      <li><strong>Inference demand:</strong> how much background knowledge the listener needs to follow the content</li>
+      <li><strong>Discourse organization:</strong> how information is structured across the spoken passage</li>
+      <li><strong>ILR level placement:</strong> with ceiling and floor rationale from the official ILR descriptor framework</li>
+    </ul>
+
+    <div class="note">
+      <strong>Architecture note:</strong> SmartILR keeps listening scoring and transcript display in separate pipelines. The transcript shown in the interface is for teacher reference only and has no effect on the assigned ILR level or confidence score.
+    </div>
+
+    <h2>When to use listening analysis</h2>
+    <p>Teachers preparing listening materials for classroom instruction can use SmartILR to confirm a passage is appropriately challenging for learners at a target level. Test developers screening audio samples for DLPT-style assessments can use it to document level decisions efficiently. Program coordinators can use it to align listening materials across a course sequence.</p>
+
+    <h2>Audio formats supported</h2>
+    <p>SmartILR accepts common audio and video formats including MP3, MP4, WAV, and M4A. For longer files, the tool processes the full audio and provides a single composite level estimate rather than segment-by-segment scoring.</p>
+
+    <a class="cta" href="/">Analyze a Listening Sample</a>
+  </div>
+
+  <div class="nav-links">
+    <h2>Other SmartILR tools</h2>
+    <ul>
+      <li><a href="/ilr-rating-tool">ILR Rating Tool</a></li>
+      <li><a href="/ilr-reading-analysis">ILR Reading Analysis</a></li>
+      <li><a href="/ilr-level-justification">ILR Level Justification</a></li>
+      <li><a href="/dlpt-style-ilr-evaluation">DLPT-Style ILR Evaluation</a></li>
+      <li><a href="/">SmartILR Homepage</a></li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>
