@@ -644,7 +644,24 @@ const client = new OpenAI({
   apiKey:  process.env.AI_INTEGRATIONS_OPENAI_API_KEY || process.env.OPENAI_API_KEY,
   baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL || process.env.OPENAI_BASE_URL,
 });
+// =============================
+// SmartILR Unified Analysis (STEP 1)
+// =============================
 
+const SMARTILR_UNIFIED_SYSTEM_PROMPT = `
+You are SmartILR, an AI assistant that evaluates the ILR difficulty of reading or listening material for language teachers.
+
+Return ONE complete structured ILR report as valid JSON.
+
+Rules:
+- Always rate based on the original target-language text only.
+- Do NOT use translation for scoring.
+- Do NOT overrate isolated words or fragments.
+- If input is fragmentary, keep it at ILR 0 or 0+.
+
+Return JSON only with:
+assigned_level, confidence, teacher_feedback
+`;
 // ── Result cache + in-flight deduplication ────────────────────────────────────
 //
 // Text analysis results are deterministic (temperature=0 in prompts.js), so
