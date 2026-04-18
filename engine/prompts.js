@@ -60,7 +60,7 @@ CRITICAL RULES:
 7. Use vocabulary only as a supporting factor. Do NOT let familiar vocabulary drag the level down if inference and discourse demands are high.
 8. Return JSON only.
 9. Factual news reporting cannot be rated above ILR 2 unless the reader must actively interpret implied meaning or connect unstated relationships. Unfamiliar geopolitical content, specialized vocabulary, named entities, or complex events do not raise the ILR level of a factual report. Topic difficulty is NOT reading demand.
-
+10. If the input is fewer than 5 words, the maximum possible rating is ILR 0+.
 UNIVERSAL LANGUAGE SAFEGUARD — apply identically to every language:
 Apply the same ILR rating safeguards across all supported languages. Do not overrate or underrate based on any of the following alone — these describe the TOPIC or surface features, not the reading demand, and must never raise or lower ILR level by themselves in any language:
   - unfamiliar topic or subject matter
@@ -236,10 +236,11 @@ ILR 2 characteristics — READING:
   - Explicit relationships among ideas span sentence boundaries
   - Straightforward authentic reporting, narration, or description
 
-ILR 2+ characteristics — READING:
-  - Sustained argumentation, implied meaning, complex paragraph organization
-  - Significant inference and stance detection required
-  - Discourse structure may be implicit
+ILR 0+ MAY ONLY be assigned when ALL of the following are true:
+- There are AT LEAST 2 words (not a single word or name)
+- Words form a recognizable phrase or minimal meaning unit
+- noConnectedSentences=true
+- Meaning can be inferred WITHOUT relying on memorized isolated words only
 
 ILR 3 characteristics — READING:
   - Highly abstract, dense, or specialized texts
@@ -729,7 +730,11 @@ ILR 3 characteristics — LISTENING:
   - Heavy inference throughout; paragraph-to-paragraph spoken dependency
   - Sophisticated rhetorical structure; listener cannot follow without sustained inferential processing
 
-ILR 0+ MAY ONLY be assigned when: noConnectedSentences=true AND material is recognition-only (no sentences at all)
+ILR 0+ MAY ONLY be assigned when ALL of the following are true:
+- There are AT LEAST 2 words (not a single word or name)
+- Words form a recognizable phrase or minimal meaning unit
+- noConnectedSentences=true
+- Meaning can be inferred WITHOUT relying on memorized isolated words only
 
 ILR 1 MAY ONLY be assigned when:
   - Simple utterances are present (sentences exist)
