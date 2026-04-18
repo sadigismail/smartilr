@@ -51,9 +51,7 @@ TASK:
 Rate the ILR reading/listening demand of the passage itself, not a student response.
 
 CRITICAL RULES:
-1. Detect the language.
-2. If the passage is not English, translate it into clear English.
-3. Analyze BOTH the original passage and the English translation.
+
 4. Do NOT underrate argumentative passages in any language. Apply the same ILR rating safeguards across all supported languages (Arabic, English, Spanish, French, Russian, Chinese, Korean, Farsi, German, and any other language encountered).
 5. Opinion/editorial and analytical commentary texts must never be treated like simple factual reports.
 6. If a passage contains multi-paragraph argument, stance, abstract reasoning, historical comparison, or paragraph-to-paragraph dependency, it cannot reasonably be ILR 1+.
@@ -729,12 +727,6 @@ ILR 3 characteristics — LISTENING:
   - Highly abstract, dense, or specialized speech
   - Heavy inference throughout; paragraph-to-paragraph spoken dependency
   - Sophisticated rhetorical structure; listener cannot follow without sustained inferential processing
-
-ILR 0+ MAY ONLY be assigned when ALL of the following are true:
-- There are AT LEAST 2 words (not a single word or name)
-- Words form a recognizable phrase or minimal meaning unit
-- noConnectedSentences=true
-- Meaning can be inferred WITHOUT relying on memorized isolated words only
 
 ILR 1 MAY ONLY be assigned when:
   - Simple utterances are present (sentences exist)
