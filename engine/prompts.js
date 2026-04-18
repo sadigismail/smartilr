@@ -58,7 +58,7 @@ CRITICAL RULES:
 7. Use vocabulary only as a supporting factor. Do NOT let familiar vocabulary drag the level down if inference and discourse demands are high.
 8. Return JSON only.
 9. Factual news reporting cannot be rated above ILR 2 unless the reader must actively interpret implied meaning or connect unstated relationships. Unfamiliar geopolitical content, specialized vocabulary, named entities, or complex events do not raise the ILR level of a factual report. Topic difficulty is NOT reading demand.
-10. If the input is fewer than 5 words, the maximum possible rating is ILR 0+.
+10. If the input is fewer than 3 words AND does not form a complete sentence, the maximum possible rating is ILR 0+.
 UNIVERSAL LANGUAGE SAFEGUARD — apply identically to every language:
 Apply the same ILR rating safeguards across all supported languages. Do not overrate or underrate based on any of the following alone — these describe the TOPIC or surface features, not the reading demand, and must never raise or lower ILR level by themselves in any language:
   - unfamiliar topic or subject matter
