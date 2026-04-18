@@ -486,7 +486,8 @@ ILR upper-band discriminator signals — ALWAYS evaluate and set ALL of these wh
 - multiLayerMeaning: The text sustains MULTIPLE SIMULTANEOUS interpretive layers throughout — the text supports more than one legitimate and incompatible reading simultaneously, and the reader must hold these competing or complementary layers at once without resolving them. NOT satisfied by texts with a single dominant reading and some ambiguity at the margins. Set TRUE only when multi-layer interpretation is structurally embedded and sustained across the entire text.
 - noScaffolding: The text provides ZERO structural or metalinguistic support — there are no explicit discourse markers, no transitional signals announcing argument moves, no guiding frames, no summary statements, no topic sentences, no explicit logical connectives that help the reader track structure. The reader must supply all organizational knowledge, background, and interpretive framework independently. NOT satisfied by texts that merely minimize scaffolding. Set TRUE only when scaffolding is completely absent.
 
-Return this exact JSON shape:
+Return ONLY valid JSON. No explanations, no text, no comments.
+Follow this exact JSON shape:
 Do NOT include rubricJustification in your response.
 PASSAGE LANGUAGE SELECTOR:
 ${selectedLanguage || "Auto-detect"}
