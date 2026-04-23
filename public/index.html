@@ -14001,7 +14001,7 @@
                 const tipHtml = _buildMWNETip(surface, ned);
                 const idx = _waTooltips.length;
                 _waTooltips.push(tipHtml);
-                _spanParts.push(`<span class="wa-token" data-wai="${idx}">${_waEsc(surface)}</span>`);
+                _spanParts.push(_waEsc(surface));
                 _ti += 3;
                 _merged = true;
               }
@@ -14017,7 +14017,7 @@
                 const tipHtml = _buildMWNETip(surface, ned);
                 const idx = _waTooltips.length;
                 _waTooltips.push(tipHtml);
-                _spanParts.push(`<span class="wa-token" data-wai="${idx}">${_waEsc(surface)}</span>`);
+                _spanParts.push(_waEsc(surface));
                 _ti += 2;
                 _merged = true;
               }
@@ -14043,7 +14043,7 @@
               }
               const idx = _waTooltips.length;
               _waTooltips.push(tipHtml);
-              _spanParts.push(`<span class="wa-token" data-wai="${idx}">${_waEsc(word)}</span>`);
+              _spanParts.push(_waEsc(word));
               _ti++;
             }
           }
