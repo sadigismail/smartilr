@@ -13858,35 +13858,11 @@
         activeTooltip = tip;
       }
 
-      passageEl.querySelectorAll(".wa-token").forEach(token => {
-        const idx = parseInt(token.dataset.wai, 10);
-        const tipHtml = _waTooltips[idx] || "";
-
-        if (isTouchDevice) {
-          token.addEventListener("click", function(e) {
-            e.stopPropagation();
-            if (activeTappedToken === this) { removeTooltip(); return; }
-            this.classList.add("wa-tapped");
-            activeTappedToken = this;
-            showTooltip(this, tipHtml);
-          });
-        } else {
-          token.addEventListener("mouseenter", function() {
-            showTooltip(this, tipHtml);
-          });
-          token.addEventListener("mouseleave", function() {
-            removeTooltip();
-          });
+     
         }
       });
 
-      // Tap elsewhere on touch to dismiss
-      if (isTouchDevice) {
-        document.addEventListener("click", function(e) {
-          if (!e.target.closest(".wa-token")) removeTooltip();
-        });
-      }
-    }
+   
 
     function _renderWordAnalysis(data, sourceText) {
       const passageEl  = document.getElementById("waPassage");
